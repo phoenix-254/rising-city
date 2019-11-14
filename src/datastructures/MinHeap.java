@@ -61,4 +61,12 @@ public class MinHeap {
         heap[size] = item;
         heapify(size);
     }
+
+    public void print() {
+        for(int i = 1; i <= size/2; i++) {
+            System.out.println("Parent: " + heap[i].getExecutedTime() + 
+            ", LC: " + heap[2*i].getExecutedTime() +
+            ", RC: " + heap[2*i + 1].getExecutedTime());
+        }
+    }
 }
