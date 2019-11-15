@@ -1,19 +1,37 @@
+import java.io.*;
+import java.util.*;
+
 import datastructures.MinHeap;
-import pojo.Building;
+import pojo.*;
+
+import test.*;
+import util.InputParser;
 
 public class risingCity {
-    public static void main(String[] args) {
-        MinHeap heap = new MinHeap(10);
-        heap.add(new Building(1, 5, 10));
-        heap.add(new Building(2, 3, 25));
-        heap.add(new Building(3, 17, 18));
-        heap.add(new Building(4, 10, 15));
-        heap.add(new Building(5, 84, 94));
-        heap.add(new Building(6, 19, 20));
-        heap.add(new Building(7, 6, 9));
-        heap.add(new Building(8, 22, 25));
-        heap.add(new Building(9, 9, 30));
+    private static Queue<TestCase> testCases;
 
-        heap.print();
+    public static void main(String[] args) throws IOException {
+        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(new File(args[0])))) {
+            testCases = new LinkedList<>();
+            
+            String testCaseStr;
+            while((testCaseStr = bufferedReader.readLine()) != null) {
+                // Parse the input and add the Test case into Queue.
+                testCases.add(InputParser.getParsedTestCase(testCaseStr));
+            }
+        }
+
+        while(!testCases.isEmpty()) {
+            TestCase t = testCases.remove();
+            System.out.println("InputTime: " + t.getInputTime() 
+            + ", Command: " + t.getTestCommand().toString()
+            + ", BuildingId: " + t.getBuildingId()
+            + ", ConstructionTime: " + t.getTotalConstructionTime()
+            + ", Start: " + t.getStartBuildingNum()
+            + ", End: " + t.getEndBuildingNum());
+        }
+        
+        //MinHeap heap = new MinHeap(2000);
+        //heap.add(new HeapNode(1, 5, 10, null));
     }
 }
