@@ -13,17 +13,21 @@ public class Building {
     private int totalTime;
 
     public Building(int buildingNumber, int executedTime, int totalTime) {
-        this.buildingNumber = buildingNumber;
-        this.executedTime = executedTime;
-        this.totalTime = totalTime;
+        this.setBuildingNumber(buildingNumber);
+        this.setExecutedTime(executedTime);
+        this.setTotalTime(totalTime);
     }
 
     public int getBuildingNumber() {
-        return this.buildingNumber;
+        return buildingNumber;
+    }
+
+    public void setBuildingNumber(int buildingNumber) {
+        this.buildingNumber = buildingNumber;
     }
 
     public int getExecutedTime() {
-        return this.executedTime;
+        return executedTime;
     }
 
     public void setExecutedTime(int executedTime) {
@@ -31,7 +35,7 @@ public class Building {
     }
 
     public int getTotalTime() {
-        return this.totalTime;
+        return totalTime;
     }
 
     public void setTotalTime(int totalTime) {

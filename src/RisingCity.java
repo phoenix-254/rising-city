@@ -1,7 +1,7 @@
 import datastructures.MinHeap;
 import pojo.Building;
 
-public class RisingCity {
+public class risingCity {
     public static void main(String[] args) {
         MinHeap heap = new MinHeap(10);
         heap.add(new Building(1, 5, 10));

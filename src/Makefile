@@ -17,7 +17,7 @@ JFLAGS = -g
 	$(JC) $(JFLAGS) $*.java
 
 CLASSES = \
-	RisingCity.java
+	risingCity.java
 
 default: classes
 

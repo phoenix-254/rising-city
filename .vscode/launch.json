@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - risingCity",
+            "request": "launch",
+            "mainClass": "risingCity",
+            "projectName": "rising-city_dd406027"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - RisingCity",
             "request": "launch",
             "mainClass": "src.RisingCity",
