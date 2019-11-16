@@ -1,5 +1,4 @@
 # rising-city
-**COP 5536 - Advanced data structures - Fall 2019**
 
 **Problem description**
 
