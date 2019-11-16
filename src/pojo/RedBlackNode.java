@@ -1,10 +1,5 @@
 package pojo;
 
-enum NodeColor {
-    RED,
-    BLACK
-}
-
 public class RedBlackNode extends Building {
     private NodeColor color;
 
@@ -14,7 +9,15 @@ public class RedBlackNode extends Building {
 
     public RedBlackNode(int buildingNumber, int executedTime, int totalTime) {
         super(buildingNumber, executedTime, totalTime);
-        this.color = NodeColor.RED;
+        this.setColor(NodeColor.RED);
+    }
+
+    public NodeColor getColor() {
+        return color;
+    }
+
+    public void setColor(NodeColor color) {
+        this.color = color;
     }
 
     public HeapNode getHeapNodeReference() {
@@ -23,6 +26,22 @@ public class RedBlackNode extends Building {
 
     public void setHeapNodeReference(HeapNode heapNodeReference) {
         this.heapNodeReference = heapNodeReference;
+    }
+
+    public RedBlackNode getLeft() {
+        return left;
+    }
+
+    public void setLeft(RedBlackNode left) {
+        this.left = left;
+    }
+
+    public RedBlackNode getRight() {
+        return right;
+    }
+
+    public void setRight(RedBlackNode right) {
+        this.right = right;
     }
 
     public RedBlackNode getParent() {
