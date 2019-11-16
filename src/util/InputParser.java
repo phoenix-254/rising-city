@@ -2,6 +2,16 @@ package util;
 
 import test.*;
 
+// A parser for reading test case data from the input and creating TestCase object from it.
+
+/**
+ * Sample Input:
+ * 0: Insert(50,20)
+ * 15: Insert(15,25)
+ * 16: PrintBuilding(0,100)
+ * 20: Print(50)
+ * 29: Insert(75,12)
+ */
 public class InputParser {
     public static TestCase getParsedTestCase(final String testCaseStr) {
         final TestCase testCase = new TestCase();

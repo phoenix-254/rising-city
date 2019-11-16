@@ -1,13 +1,20 @@
 package test;
 
+// A generic class containing information regarding different types of test cases.
 public class TestCase {
+    // Type of test operation.
     private TestCommand testCommand;
 
+    // Time when the test case is read from input.
     private int inputTime;
 
+    // Unique integer identifier for building.
     private int buildingId;
+    // Total time required for constructing the entire building.
     private int totalConstructionTime;
 
+    // Range of building numbers to be printed. 
+    // endBuildingNum would be 0 in case if only one building has to be printed.
     private int startBuildingNum, endBuildingNum;
 
     public TestCase() {}
