@@ -1,5 +1,7 @@
 package datastructures;
 
+import java.util.Arrays;
+
 import pojo.*;
 
 public class MinHeap {
@@ -68,7 +70,7 @@ public class MinHeap {
     // Add item into heap array.
     public void add(HeapNode item) {
         if(size > capacity) {
-            throw new IllegalStateException("Capacity Exceeded. Cannot insert more than " + capacity + " items.");
+            throw new IllegalStateException("Error: Capacity Exceeded. Cannot insert more than " + capacity + " items.");
         }
         
         heap[size] = item;
@@ -78,9 +80,13 @@ public class MinHeap {
     // Rearranges the heap array as per heap property whenever a new item is inserted.
     private void heapifyUp(int position) {
         while(hasParent(position) && 
-              heap[position].getExecutedTime() < heap[getParentPosition(position)].getExecutedTime()) {
-            swap(position, getParentPosition(position));
-            position = getParentPosition(position);
+              heap[position].getExecutedTime() <= heap[getParentPosition(position)].getExecutedTime()) {
+            // If executed time is same, tie is broken by comparing building number.
+            if(heap[position].getExecutedTime() < heap[getParentPosition(position)].getExecutedTime() || 
+               heap[position].getBuildingNumber() < heap[getParentPosition(position)].getBuildingNumber()) {
+                swap(position, getParentPosition(position));
+                position = getParentPosition(position);
+            }
         }
         size++;
     }
@@ -88,7 +94,7 @@ public class MinHeap {
     // Returns the minimum item from the heap.
     public HeapNode getMin() {
         if(isEmpty()) {
-            throw new IllegalStateException("Error. No items available. Heap is empty.");
+            throw new IllegalStateException("Error: No items available. Heap is empty.");
         }
         return heap[TOP];
     }
@@ -96,7 +102,7 @@ public class MinHeap {
     // Removes and returns the minimum item from the heap.
     public HeapNode extractMin() {
         if(isEmpty()) {
-            throw new IllegalStateException("Error. No items available. Heap is empty.");
+            throw new IllegalStateException("Error: No items available. Heap is empty.");
         }
 
         HeapNode item = heap[TOP];
@@ -113,19 +119,30 @@ public class MinHeap {
         // Break the recursion when the item is leaf node.
         if(isLeaf(position)) return;
 
-        // If the executed time value at position is lesser than it's left or right child.  
-        if(heap[position].getExecutedTime() > heap[getLeftChildPosition(position)].getExecutedTime() || 
-           heap[position].getExecutedTime() > heap[getRightChildPosition(position)].getExecutedTime()) {
-            // If executed time of left child node is lesser than the right child node. 
-            if(heap[getLeftChildPosition(position)].getExecutedTime() < 
-               heap[getRightChildPosition(position)].getExecutedTime()) {
-                swap(position, getLeftChildPosition(position));
-                heapifyDown(getLeftChildPosition(position));
-            }
-            else {
-                swap(position, getRightChildPosition(position));
-                heapifyDown(getRightChildPosition(position));
-            }
+        // Left and Right child indexes.
+        int left = getLeftChildPosition(position);
+        int right = getRightChildPosition(position);
+
+        // Check which child has smaller value. Tie is broken by comparing building number if executed time is same.
+        boolean isLeftSmaller = (heap[left].getExecutedTime() != heap[right].getExecutedTime()) ? 
+                                heap[left].getExecutedTime() < heap[right].getExecutedTime() : 
+                                heap[left].getBuildingNumber() < heap[right].getBuildingNumber();
+
+        if(isLeftSmaller && heap[position].getExecutedTime() >= heap[left].getExecutedTime() && 
+           (heap[position].getExecutedTime() > heap[left].getExecutedTime() || 
+           heap[position].getBuildingNumber() > heap[left].getBuildingNumber())) {
+            swap(position, left);
+            heapifyDown(left);
+        } 
+        else if(heap[position].getExecutedTime() >= heap[right].getExecutedTime() && 
+        (heap[position].getExecutedTime() > heap[right].getExecutedTime() || 
+        heap[position].getBuildingNumber() > heap[right].getBuildingNumber())) {
+            swap(position, right);
+            heapifyDown(right);
         }
+    }
+
+    public void print() {
+        System.out.println(Arrays.toString(heap));
     }
 }

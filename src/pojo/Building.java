@@ -41,4 +41,9 @@ public class Building {
     public void setTotalTime(int totalTime) {
         this.totalTime = totalTime;
     }
+
+    @Override
+    public String toString() {
+        return "(" + this.buildingNumber + "," + this.executedTime + "," + this.totalTime + ")";
+    }
 }
