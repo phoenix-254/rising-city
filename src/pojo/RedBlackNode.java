@@ -65,6 +65,6 @@ public class RedBlackNode extends Building {
 
     @Override
     public String toString() {
-        return this.getBuildingNumber() + "," + this.color.toString();
+        return "(" + this.getBuildingNumber() + "," + this.getExecutedTime() + "," + this.getTotalTime() + ")";
     }
 }

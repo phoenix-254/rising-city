@@ -1,7 +1,5 @@
 package datastructures;
 
-import java.util.Arrays;
-
 import pojo.*;
 
 public class MinHeap {
@@ -31,7 +29,7 @@ public class MinHeap {
     }
 
     // Return true if the heap is empty, false otherwise.
-    private boolean isEmpty() {
+    public boolean isEmpty() {
         return size == 1;
     }
 
@@ -86,6 +84,8 @@ public class MinHeap {
                heap[position].getBuildingNumber() < heap[getParentPosition(position)].getBuildingNumber()) {
                 swap(position, getParentPosition(position));
                 position = getParentPosition(position);
+            } else {
+                break;
             }
         }
         size++;
@@ -140,9 +140,5 @@ public class MinHeap {
             swap(position, right);
             heapifyDown(right);
         }
-    }
-
-    public void print() {
-        System.out.println(Arrays.toString(heap));
     }
 }
