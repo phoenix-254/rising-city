@@ -9,10 +9,10 @@ import pojo.*;
 public class CityBuilder {
     private Queue<TestCase> testCases;
 
+    // Global counter representing the present day.
     private int presentDay = 0;
 
     private MinHeap minHeap;
-
     private RedBlackTree redBlackTree;
 
     private static final int MAX_DAYS_TO_WORK = 5;
@@ -25,9 +25,13 @@ public class CityBuilder {
 
     public void build() {
         int daysToNextWork = 0;
+
+        // Work until either there are requests to be processed from queue or there are buildings left to be built.
         while(!testCases.isEmpty() || !minHeap.isEmpty()) {
             if(!testCases.isEmpty()) {
                 TestCase testCase = testCases.peek();
+
+                // Work request can be taken only when the input time of the request matches the present day.
                 if(testCase.getInputTime() == presentDay) {
                     switch(testCase.getTestCommand()) {
                         case INSERT:
@@ -41,6 +45,8 @@ public class CityBuilder {
                                 testCase.getStartBuildingNum(), testCase.getEndBuildingNum()));
                             break;
                     }
+
+                    // Remove from queue once executed.
                     testCases.remove();
                 }
 
