@@ -111,10 +111,6 @@ public class RedBlackTree {
             + node.getBuildingNumber() + " already exists.");
         }
 
-        node.setLeft(nil);
-        node.setRight(nil);
-        node.setColor(NodeColor.RED);
-
         insertionRebalance(node);
     }
 
@@ -164,17 +160,6 @@ public class RedBlackTree {
         root.setColor(NodeColor.BLACK);
     }
 
-    private void transplant(RedBlackNode node1, RedBlackNode node2) {
-        if(node1.getParent() == nil) {
-            root = node2;
-        } else if(isLeftChild(node1)) {
-            node1.getParent().setLeft(node2);
-        } else {
-            node1.getParent().setRight(node2);
-        }
-        node2.setParent(node1.getParent());
-     }
-
     public void delete(RedBlackNode node) {
         if(node == null) 
             throw new IllegalArgumentException("Error: Invalid input. Cannot remove null.");
@@ -184,10 +169,10 @@ public class RedBlackTree {
 
         if(node.getLeft() == nil) {
             xNode = node.getRight();
-            transplant(node, node.getRight());
+            updateParentChildLink(node.getParent(), node, node.getRight());
         } else if(node.getRight() == nil) {
             xNode = node.getLeft();
-            transplant(node, node.getLeft());
+            updateParentChildLink(node.getParent(), node, node.getLeft());
         } else {
             yNode = getMinimumNode(node.getRight());
             nodeColor = yNode.getColor();
@@ -197,12 +182,12 @@ public class RedBlackTree {
             if(yNode.getParent() == node) {
                 xNode.setParent(yNode);
             } else {
-                transplant(yNode, yNode.getRight());
+                updateParentChildLink(yNode.getParent(), yNode, yNode.getRight());
                 yNode.setRight(node.getRight());
                 yNode.getRight().setParent(yNode);
             }
 
-            transplant(node, yNode);
+            updateParentChildLink(node.getParent(), node, yNode);
             yNode.setLeft(node.getLeft());
             yNode.getLeft().setParent(yNode);
             yNode.setColor(node.getColor());
