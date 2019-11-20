@@ -2,6 +2,8 @@ package datastructures;
 
 import pojo.*;
 
+import java.util.*;
+
 public class RedBlackTree {
     // Root node of the red black tree.
     private RedBlackNode root;
@@ -12,7 +14,9 @@ public class RedBlackTree {
     // Constructor.
     public RedBlackTree() {
         this.nil = RedBlackNode.NIL;
-        this.root = RedBlackNode.NIL;
+        this.root = nil;
+        this.root.setLeft(nil);
+        this.root.setRight(nil);
     }
 
     // Checks if the node is left child.
@@ -87,6 +91,7 @@ public class RedBlackTree {
 
         RedBlackNode xNode = root, yNode = nil;
 
+        // 
         while(xNode != nil) {
             yNode = xNode;
             xNode = (node.getBuildingNumber() < xNode.getBuildingNumber()) ? xNode.getLeft() : xNode.getRight();
@@ -100,7 +105,7 @@ public class RedBlackTree {
             yNode.setLeft(node);
         } else if(node.getBuildingNumber() > yNode.getBuildingNumber()) {
             yNode.setRight(node);
-        } else {
+        } else if(node.getBuildingNumber() == yNode.getBuildingNumber()) {
             throw new IllegalArgumentException("Error: Trying to insert duplicate node. Building with building id " 
             + node.getBuildingNumber() + " already exists.");
         }
@@ -264,14 +269,39 @@ public class RedBlackTree {
         node.setColor(NodeColor.BLACK);
     }
 
-    public RedBlackNode getRoot() {
-        return root;
+    public RedBlackNode search(int buildingNumber) {
+        return searchRecursive(root, buildingNumber);
     }
 
-    public void print(RedBlackNode node) {
-        if(node == nil) return;
-        print(node.getLeft());
-        System.out.println(node.toString());
-        print(node.getRight());
+    private RedBlackNode searchRecursive(RedBlackNode root, int buildingNumber) {
+        if(root == nil) return null;
+        if(root.getBuildingNumber() == buildingNumber) {
+            return root;
+        } else if(root.getBuildingNumber() > buildingNumber) {
+            return searchRecursive(root.getLeft(), buildingNumber);
+        } else {
+            return searchRecursive(root.getRight(), buildingNumber);
+        }
+    }
+
+    public List<RedBlackNode> searchInRange(int startBuildingNumber, int endBuildingNumber) {
+        List<RedBlackNode> result = new ArrayList<>();
+        searchInRangeRecursive(root, startBuildingNumber, endBuildingNumber, result);
+        return result;
+    }
+
+    private void searchInRangeRecursive(RedBlackNode root, int startBuildingNumber, int endBuildingNumber, List<RedBlackNode> nodes) {
+        if(root == nil) return;
+        if(root.getBuildingNumber() > startBuildingNumber) {
+            searchInRangeRecursive(root.getLeft(), startBuildingNumber, endBuildingNumber, nodes);
+        }
+
+        if(root.getBuildingNumber() >= startBuildingNumber && root.getBuildingNumber() <= endBuildingNumber) {
+            nodes.add(root);
+        } 
+        
+        if(root.getBuildingNumber() < endBuildingNumber) {
+            searchInRangeRecursive(root.getRight(), startBuildingNumber, endBuildingNumber, nodes);
+        }
     }
 }
