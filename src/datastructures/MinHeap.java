@@ -77,17 +77,25 @@ public class MinHeap {
 
     // Rearranges the heap array as per heap property whenever a new item is inserted.
     private void heapifyUp(int position) {
-        while(hasParent(position) && 
-              heap[position].getExecutedTime() <= heap[getParentPosition(position)].getExecutedTime()) {
-            // If executed time is same, tie is broken by comparing building number.
-            if(heap[position].getExecutedTime() < heap[getParentPosition(position)].getExecutedTime() || 
-               heap[position].getBuildingNumber() < heap[getParentPosition(position)].getBuildingNumber()) {
-                swap(position, getParentPosition(position));
-                position = getParentPosition(position);
+        while(hasParent(position)) {
+            if(heap[position].getExecutedTime() <= heap[getParentPosition(position)].getExecutedTime()) {
+                // If executed time is same, tie is broken by comparing building number.
+                if(heap[position].getExecutedTime() == heap[getParentPosition(position)].getExecutedTime()) {
+                    if(heap[position].getBuildingNumber() < heap[getParentPosition(position)].getBuildingNumber()) {
+                        swap(position, getParentPosition(position));
+                        position = getParentPosition(position);    
+                    } else {
+                        break;
+                    }
+                } else {
+                    swap(position, getParentPosition(position));
+                    position = getParentPosition(position);
+                }
             } else {
                 break;
             }
         }
+
         size++;
     }
 

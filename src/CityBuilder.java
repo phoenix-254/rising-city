@@ -60,26 +60,35 @@ public class CityBuilder {
 
                 if(!testCases.isEmpty()) {
                     daysToNextWork = testCases.peek().getInputTime() - presentDay;
+                } else {
+                    daysToNextWork = Integer.MAX_VALUE;
                 }
             }
 
-            if(!minHeap.isEmpty()) {
-                // Get the next building to work upon from min heap.
-                HeapNode heapNode = minHeap.extractMin();
-                int workTodo = Math.min(heapNode.getTotalTime() - heapNode.getExecutedTime(), 
-                                        Math.min(MAX_DAYS_TO_WORK, daysToNextWork));
+            while(daysToNextWork != 0) {
+                if(!minHeap.isEmpty()) {
+                    // Get the next building to work upon from min heap.
+                    HeapNode heapNode = minHeap.extractMin();
+                    int workToDo = Math.min(heapNode.getTotalTime() - heapNode.getExecutedTime(),
+                                            Math.min(MAX_DAYS_TO_WORK, daysToNextWork));
 
-                heapNode.setExecutedTime(heapNode.getExecutedTime() + workTodo);
-                heapNode.getRbtReference().setExecutedTime(heapNode.getExecutedTime());
+                    heapNode.setExecutedTime(heapNode.getExecutedTime() + workToDo);
 
-                presentDay += workTodo;
+                    presentDay += workToDo;
 
-                // If building construction is finished, remove it and print (buindingNumber,dayWhenItFinished) tuple.
-                if(heapNode.getExecutedTime() == heapNode.getTotalTime()) {
-                    OutputParser.addFinishedBuilding(heapNode.getRbtReference(), presentDay);
-                    redBlackTree.delete(heapNode.getRbtReference());
-                } else { // Else, add it again to the heap to complete remaining construction.   
-                    minHeap.insert(heapNode);
+                    // If building construction is finished, remove it and print (buindingNumber,dayWhenItFinished) tuple.
+                    if(heapNode.getExecutedTime() == heapNode.getTotalTime()) {
+                        OutputParser.addFinishedBuilding(heapNode.getRbtReference(), presentDay);
+                        redBlackTree.delete(heapNode.getRbtReference());
+                    } else { // Else, add it again to the heap to complete remaining construction.   
+                        heapNode.getRbtReference().setExecutedTime(heapNode.getExecutedTime());
+                        minHeap.insert(heapNode);
+                    }
+
+                    daysToNextWork -= workToDo;
+                } else {
+                    presentDay += daysToNextWork;
+                    daysToNextWork = 0;
                 }
             }
         }

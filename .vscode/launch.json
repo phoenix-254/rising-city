@@ -5,14 +5,8 @@
             "name": "CodeLens (Launch) - risingCity",
             "request": "launch",
             "mainClass": "risingCity",
-            "projectName": "rising-city_dd406027"
-        },
-        {
-            "type": "java",
-            "name": "CodeLens (Launch) - RisingCity",
-            "request": "launch",
-            "mainClass": "src.RisingCity",
-            "projectName": "rising-city_dd406027"
+            "projectName": "rising-city_dd406027",
+            "args": "src\\input_file.txt"
         }
     ]
 }

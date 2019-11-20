@@ -35,18 +35,16 @@ public class RedBlackTree {
 
     // Updates child link for parent node.
     private void updateParentChildLink(RedBlackNode parent, RedBlackNode oldChild, RedBlackNode newChild) {
-        if(parent != nil) {
-            if(isLeftChild(oldChild)) { // If the old child was in the left.
-                parent.setLeft(newChild);
-            } else { // If the old child was in the right.
-                parent.setRight(newChild);
-            }
-        } else { // If rotation caused the new child to become root.
-            root = newChild;
-        }
-
         // Set parent as new-child's parent.
         newChild.setParent(parent);
+
+        if(parent == nil) { // If rotation caused the new child to become root.
+            root = newChild;
+        } else if(isLeftChild(oldChild)) { // If the old child was in the left.
+            parent.setLeft(newChild);
+        } else { // If the old child was in the right.
+            parent.setRight(newChild);
+        }
     }
 
     // Peforms left rotation for node.
@@ -54,7 +52,7 @@ public class RedBlackTree {
         // Copy node's right child.
         RedBlackNode yNode = node.getRight();
         
-        // Update node's right child by yNode's left subtree.
+        // Turn yNode's left subtree into node's right subtree.
         node.setRight(yNode.getLeft());
 
         // Update yNode's left child's parent by node if it's not a leaf node.
@@ -113,6 +111,10 @@ public class RedBlackTree {
             + node.getBuildingNumber() + " already exists.");
         }
 
+        node.setLeft(nil);
+        node.setRight(nil);
+        node.setColor(NodeColor.RED);
+
         insertionRebalance(node);
     }
 
@@ -162,21 +164,32 @@ public class RedBlackTree {
         root.setColor(NodeColor.BLACK);
     }
 
+    private void transplant(RedBlackNode node1, RedBlackNode node2) {
+        if(node1.getParent() == nil) {
+            root = node2;
+        } else if(isLeftChild(node1)) {
+            node1.getParent().setLeft(node2);
+        } else {
+            node1.getParent().setRight(node2);
+        }
+        node2.setParent(node1.getParent());
+     }
+
     public void delete(RedBlackNode node) {
         if(node == null) 
             throw new IllegalArgumentException("Error: Invalid input. Cannot remove null.");
         
         RedBlackNode xNode = null, yNode = node;
-        NodeColor nodeColor = node.getColor();
+        NodeColor nodeColor = yNode.getColor();
 
         if(node.getLeft() == nil) {
             xNode = node.getRight();
-            updateParentChildLink(node.getParent(), node, node.getRight());
+            transplant(node, node.getRight());
         } else if(node.getRight() == nil) {
             xNode = node.getLeft();
-            updateParentChildLink(node.getParent(), node, node.getLeft());
+            transplant(node, node.getLeft());
         } else {
-            yNode = getMaximumNode(node.getLeft());
+            yNode = getMinimumNode(node.getRight());
             nodeColor = yNode.getColor();
 
             xNode = yNode.getRight();
@@ -184,12 +197,12 @@ public class RedBlackTree {
             if(yNode.getParent() == node) {
                 xNode.setParent(yNode);
             } else {
-                updateParentChildLink(yNode.getParent(), yNode, yNode.getRight());
+                transplant(yNode, yNode.getRight());
                 yNode.setRight(node.getRight());
                 yNode.getRight().setParent(yNode);
             }
 
-            updateParentChildLink(node.getParent(), node, yNode);
+            transplant(node, yNode);
             yNode.setLeft(node.getLeft());
             yNode.getLeft().setParent(yNode);
             yNode.setColor(node.getColor());
@@ -200,11 +213,11 @@ public class RedBlackTree {
         }
     }
 
-    // Max Node in any BST can be found by following right child pointers from root until we encounter NULL.
-    // This method returns the node with max value in the subtree rooted at node.
-    private RedBlackNode getMaximumNode(RedBlackNode node) {
-        while(node.getRight() != nil) {
-            node = node.getRight();
+    // Min Node in any BST can be found by following left child pointers from root until we encounter NULL.
+    // This method returns the node with min value in the subtree rooted at node.
+    private RedBlackNode getMinimumNode(RedBlackNode node) {
+        while(node.getLeft() != nil) {
+            node = node.getLeft();
         }
         return node;
     }
