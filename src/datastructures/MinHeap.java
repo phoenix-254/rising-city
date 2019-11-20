@@ -65,13 +65,13 @@ public class MinHeap {
         heap[j] = temp;
     }
 
-    // Add item into heap array.
-    public void add(HeapNode item) {
+    // Inserts node into heap array.
+    public void insert(HeapNode node) {
         if(size > capacity) {
             throw new IllegalStateException("Error: Capacity Exceeded. Cannot insert more than " + capacity + " items.");
         }
         
-        heap[size] = item;
+        heap[size] = node;
         heapifyUp(size);
     }
 
@@ -91,7 +91,7 @@ public class MinHeap {
         size++;
     }
 
-    // Returns the minimum item from the heap.
+    // Returns the minimum node from the heap.
     public HeapNode getMin() {
         if(isEmpty()) {
             throw new IllegalStateException("Error: No items available. Heap is empty.");
@@ -135,8 +135,8 @@ public class MinHeap {
             heapifyDown(left);
         } 
         else if(heap[position].getExecutedTime() >= heap[right].getExecutedTime() && 
-        (heap[position].getExecutedTime() > heap[right].getExecutedTime() || 
-        heap[position].getBuildingNumber() > heap[right].getBuildingNumber())) {
+                (heap[position].getExecutedTime() > heap[right].getExecutedTime() || 
+                heap[position].getBuildingNumber() > heap[right].getBuildingNumber())) {
             swap(position, right);
             heapifyDown(right);
         }

@@ -5,7 +5,7 @@ import test.*;
 import util.InputParser;
 
 public class risingCity {
-    // Store all the test data from file at once, and store them in a Queue.
+    // Read all the test data from file at once, and store them in a Queue.
     private static Queue<TestCase> testCases;
 
     public static void main(String[] args) throws IOException {
@@ -19,6 +19,7 @@ public class risingCity {
             }
         }
 
+        // Start building the City.
         CityBuilder cityBuilder = new CityBuilder(testCases);
         cityBuilder.build();
     }

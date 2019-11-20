@@ -1,7 +1,11 @@
 package datastructures;
 
-import pojo.*;
+/** 
+ * Reference: Introduction to Algorithms 3rd Edition by Clifford Stein, Thomas H. Cormen, 
+ * Charles E. Leiserson, Ronald L. Rivest
+*/
 
+import pojo.*;
 import java.util.*;
 
 public class RedBlackTree {
@@ -91,7 +95,6 @@ public class RedBlackTree {
 
         RedBlackNode xNode = root, yNode = nil;
 
-        // 
         while(xNode != nil) {
             yNode = xNode;
             xNode = (node.getBuildingNumber() < xNode.getBuildingNumber()) ? xNode.getLeft() : xNode.getRight();
@@ -269,6 +272,8 @@ public class RedBlackTree {
         node.setColor(NodeColor.BLACK);
     }
 
+    // Finds and returns a node with buildingNumber equal to the given buildingNumber.
+    // User binary search to find the node.
     public RedBlackNode search(int buildingNumber) {
         return searchRecursive(root, buildingNumber);
     }
@@ -284,6 +289,8 @@ public class RedBlackTree {
         }
     }
 
+    // Find and returns a list of nodes for which following condition satisfies.
+    // startBuildingNumber <= node.buildingNumber <= endBuildingNumber.
     public List<RedBlackNode> searchInRange(int startBuildingNumber, int endBuildingNumber) {
         List<RedBlackNode> result = new ArrayList<>();
         searchInRangeRecursive(root, startBuildingNumber, endBuildingNumber, result);
