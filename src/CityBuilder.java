@@ -13,11 +13,18 @@ public class CityBuilder {
     private int presentDay = 0;
 
     private MinHeap minHeap;
+    private HeapNode currentBuilding;
 
     private RedBlackTree redBlackTree;
 
     private static final int MAX_DAYS_TO_WORK = 5;
     private static final int MAX_BUILDINGS = 2000;
+
+    // In each session, we store the number of days we need to continuously work on one building.
+    // This can be min(timeLeftForBuildingToComplete, MAX_DAYS_TO_WORK).
+    private int daysLeftToWorkInSession = 0;
+
+    long startTime, endTime;
 
     public CityBuilder(Queue<TestCase> testCases) {
         this.testCases = testCases;
@@ -26,11 +33,10 @@ public class CityBuilder {
     }
 
     public void build() {
-        // Stores the number of days left to next work.
-        int daysToNextWork = 0;
+        startTime = System.nanoTime();
 
         // Work until either there are requests to be processed from queue or there are buildings left to be built.
-        while(!testCases.isEmpty() || !minHeap.isEmpty()) {
+        while(!testCases.isEmpty() || !minHeap.isEmpty() || currentBuilding != null) {
             if(!testCases.isEmpty()) {
                 TestCase testCase = testCases.peek();
 
@@ -57,39 +63,46 @@ public class CityBuilder {
                     // Remove from queue once executed.
                     testCases.remove();
                 }
+            }
 
-                if(!testCases.isEmpty()) {
-                    daysToNextWork = testCases.peek().getInputTime() - presentDay;
-                } else {
-                    daysToNextWork = Integer.MAX_VALUE;
+            // Check if last building assignment is finished.
+            // If yes, take the next from min heap.
+            if(currentBuilding == null) {
+                if(!minHeap.isEmpty()) {
+                    currentBuilding = minHeap.extractMin();
+                    daysLeftToWorkInSession = Math.min(currentBuilding.getTotalTime() - 
+                                                    currentBuilding.getExecutedTime(), MAX_DAYS_TO_WORK);
+                }
+                else { // Just increment the global timer if heap is empty..
+                    presentDay++;
+                    continue;
                 }
             }
 
-            while(daysToNextWork != 0) {
-                if(!minHeap.isEmpty()) {
-                    // Get the next building to work upon from min heap.
-                    HeapNode heapNode = minHeap.extractMin();
-                    int workToDo = Math.min(heapNode.getTotalTime() - heapNode.getExecutedTime(),
-                                            Math.min(MAX_DAYS_TO_WORK, daysToNextWork));
+            // Update executed time in our data structures.
+            currentBuilding.setExecutedTime(currentBuilding.getExecutedTime() + 1);
+            currentBuilding.getRbtReference().setExecutedTime(currentBuilding.getExecutedTime());
+            
+            // Increment present day counter.
+            presentDay++;
 
-                    heapNode.setExecutedTime(heapNode.getExecutedTime() + workToDo);
-
-                    presentDay += workToDo;
-
-                    // If building construction is finished, remove it and print (buindingNumber,dayWhenItFinished) tuple.
-                    if(heapNode.getExecutedTime() == heapNode.getTotalTime()) {
-                        OutputParser.addFinishedBuilding(heapNode.getRbtReference(), presentDay);
-                        redBlackTree.delete(heapNode.getRbtReference());
-                    } else { // Else, add it again to the heap to complete remaining construction.   
-                        heapNode.getRbtReference().setExecutedTime(heapNode.getExecutedTime());
-                        minHeap.insert(heapNode);
-                    }
-
-                    daysToNextWork -= workToDo;
-                } else {
-                    presentDay += daysToNextWork;
-                    daysToNextWork = 0;
+            // If building construction is finished, remove it and print (buindingNumber,dayWhenItFinished) tuple.
+            if(currentBuilding.getExecutedTime() == currentBuilding.getTotalTime()) {
+                OutputParser.addFinishedBuilding(currentBuilding.getRbtReference(), presentDay);
+                redBlackTree.delete(currentBuilding.getRbtReference());
+            }
+            
+            daysLeftToWorkInSession--;
+            // If wokr for current building is done in this session, add it again to the heap
+            // if it isn't has not been completed yet.
+            if(daysLeftToWorkInSession == 0) {
+                if(currentBuilding.getExecutedTime() != currentBuilding.getTotalTime()) {
+                    minHeap.insert(currentBuilding);
                 }
+
+                // Reset the currentBuilding to null, so that we can select the next building to work
+                // upon in the next session.
+                currentBuilding = null;
             }
         }
 
@@ -99,6 +112,8 @@ public class CityBuilder {
     // Finish execution. Print the output to the file.
     private void finish() {
         try {
+            endTime = System.nanoTime();
+            OutputParser.addErrorMessage(String.valueOf((endTime - startTime)/1000000) + " ms.");
             OutputParser.print();
             System.exit(0);
         } catch(IOException e) {
