@@ -16,6 +16,7 @@ public class CityBuilder {
     private HeapNode currentBuilding;
 
     private RedBlackTree redBlackTree;
+    private RedBlackNode nodeToBeDeleted;
 
     private static final int MAX_DAYS_TO_WORK = 5;
     private static final int MAX_BUILDINGS = 2000;
@@ -24,8 +25,6 @@ public class CityBuilder {
     // This can be min(timeLeftForBuildingToComplete, MAX_DAYS_TO_WORK).
     private int daysLeftToWorkInSession = 0;
 
-    long startTime, endTime;
-
     public CityBuilder(Queue<TestCase> testCases) {
         this.testCases = testCases;
         this.minHeap = new MinHeap(MAX_BUILDINGS);
@@ -33,9 +32,8 @@ public class CityBuilder {
     }
 
     public void build() {
-        startTime = System.nanoTime();
-
         // Work until either there are requests to be processed from queue or there are buildings left to be built.
+        // Or if there's currentBuilding to work upon. Would be not-null in case of last building.
         while(!testCases.isEmpty() || !minHeap.isEmpty() || currentBuilding != null) {
             if(!testCases.isEmpty()) {
                 TestCase testCase = testCases.peek();
@@ -65,6 +63,13 @@ public class CityBuilder {
                 }
             }
 
+            // Check if there's any building finished, if yes delete it.
+            if(nodeToBeDeleted != null) {
+                OutputParser.addFinishedBuilding(nodeToBeDeleted, presentDay);
+                redBlackTree.delete(nodeToBeDeleted);
+                nodeToBeDeleted = null;
+            }
+
             // Check if last building assignment is finished.
             // If yes, take the next from min heap.
             if(currentBuilding == null) {
@@ -88,12 +93,15 @@ public class CityBuilder {
 
             // If building construction is finished, remove it and print (buindingNumber,dayWhenItFinished) tuple.
             if(currentBuilding.getExecutedTime() == currentBuilding.getTotalTime()) {
-                OutputParser.addFinishedBuilding(currentBuilding.getRbtReference(), presentDay);
-                redBlackTree.delete(currentBuilding.getRbtReference());
+                // We defer node deletion from RBT to avoid mishandling the scenario when next input comes 
+                // for the same building on immediate next day.
+                // Example: (8,0,10) finishing on day 40 and on the same days there's a print command for the same 
+                // building i.e 40: Print(8).
+                nodeToBeDeleted = currentBuilding.getRbtReference();
             }
             
             daysLeftToWorkInSession--;
-            // If wokr for current building is done in this session, add it again to the heap
+            // If work for current building is done in this session, add it again to the heap
             // if it isn't has not been completed yet.
             if(daysLeftToWorkInSession == 0) {
                 if(currentBuilding.getExecutedTime() != currentBuilding.getTotalTime()) {
@@ -106,14 +114,19 @@ public class CityBuilder {
             }
         }
 
+        // Last node to be printed.
+        if(nodeToBeDeleted != null) {
+            OutputParser.addFinishedBuilding(nodeToBeDeleted, presentDay);
+            redBlackTree.delete(nodeToBeDeleted);
+            nodeToBeDeleted = null;
+        }
+
         finish();        
     }
 
     // Finish execution. Print the output to the file.
     private void finish() {
         try {
-            endTime = System.nanoTime();
-            OutputParser.addErrorMessage(String.valueOf((endTime - startTime)/1000000) + " ms.");
             OutputParser.print();
             System.exit(0);
         } catch(IOException e) {
