@@ -44,6 +44,6 @@ public class Building {
 
     @Override
     public String toString() {
-        return "(" + getBuildingNumber() + "," + getExecutedTime() + "," + getTotalTime() + ")";
+        return "(" + this.getBuildingNumber() + "," + this.getExecutedTime() + "," + this.getTotalTime() + ")";
     }
 }
