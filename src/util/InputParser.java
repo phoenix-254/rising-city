@@ -3,7 +3,7 @@ package util;
 import test.*;
 import java.util.regex.*;
 
-// A parser for reading test case data from the input and creating TestCase object from it.
+// A utility class for reading test case data from the input and creating TestCase object from it.
 
 /**
  * Sample Input:
@@ -32,11 +32,9 @@ public class InputParser {
                 testCase.setTotalConstructionTime(Integer.parseInt(numbers[1]));
                 break;
             case PRINT:
-                testCase.setStartBuildingNum(Integer.parseInt(numbers[0]));
-                break;
             case PRINTBUILDING:
                 testCase.setStartBuildingNum(Integer.parseInt(numbers[0]));
-                testCase.setEndBuildingNum(Integer.parseInt(numbers[1]));
+                if(numbers.length > 1) testCase.setEndBuildingNum(Integer.parseInt(numbers[1]));
                 break;
         }
 

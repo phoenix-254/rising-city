@@ -12,29 +12,38 @@ public class CityBuilder {
     // Global counter representing the present day.
     private int presentDay = 0;
 
+    // MinHeap instance.
     private MinHeap minHeap;
+    // HeapNode instance representing the current building we are working upon.
     private HeapNode currentBuilding;
 
+    // RedBlackTree instance.
     private RedBlackTree redBlackTree;
+    // RedBlackNode instance representing the node to be deleted after building construction has been finished for that node.
     private RedBlackNode nodeToBeDeleted;
 
+    // Represents the maximum number of days allowed to be worked upon one building at a time.
     private static final int MAX_DAYS_TO_WORK = 5;
+    // Represents the maximum number of buildings allowed to be inserted.
     private static final int MAX_BUILDINGS = 2000;
 
     // In each session, we store the number of days we need to continuously work on one building.
     // This can be min(timeLeftForBuildingToComplete, MAX_DAYS_TO_WORK).
     private int daysLeftToWorkInSession = 0;
 
+    // Constructor.
     public CityBuilder(Queue<TestCase> testCases) {
         this.testCases = testCases;
         this.minHeap = new MinHeap(MAX_BUILDINGS);
         this.redBlackTree = new RedBlackTree();
     }
 
+    // Starts city building process.
     public void build() {
         // Work until either there are requests to be processed from queue or there are buildings left to be built.
         // Or if there's currentBuilding to work upon. Would be not-null in case of last building.
         while(!testCases.isEmpty() || !minHeap.isEmpty() || currentBuilding != null) {
+            // Check if there are test case operations left to be performed.
             if(!testCases.isEmpty()) {
                 TestCase testCase = testCases.peek();
 
@@ -101,6 +110,7 @@ public class CityBuilder {
             }
             
             daysLeftToWorkInSession--;
+            
             // If work for current building is done in this session, add it again to the heap
             // if it isn't has not been completed yet.
             if(daysLeftToWorkInSession == 0) {

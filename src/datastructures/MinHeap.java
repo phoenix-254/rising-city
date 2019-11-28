@@ -2,6 +2,7 @@ package datastructures;
 
 import pojo.*;
 
+// Min Heap data structure.
 public class MinHeap {
     // Heap array containing Node objects.
     private HeapNode[] heap;
@@ -33,12 +34,12 @@ public class MinHeap {
         return size == 1;
     }
 
-    // Returns true if the given position has parent, false otherwise
+    // Returns true if the given position has parent, false otherwise.
     private boolean hasParent(int position) {
         return position != 1;
     }
 
-    // Returns true if the item at given position is a leaf node, false otherwise. 
+    // Returns true if the item at the given position is a leaf node, false otherwise.
     private boolean isLeaf(int position) {
         return (position >= size/2 && position <= size);
     }
@@ -90,14 +91,6 @@ public class MinHeap {
         }
 
         size++;
-    }
-
-    // Returns the minimum node from the heap.
-    public HeapNode getMin() {
-        if(isEmpty()) {
-            throw new IllegalStateException("Error: No items available. Heap is empty.");
-        }
-        return heap[TOP];
     }
 
     // Removes and returns the minimum item from the heap.

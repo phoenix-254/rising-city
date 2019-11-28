@@ -47,7 +47,7 @@ public class RedBlackTree {
         }
     }
 
-    // Peforms left rotation for node.
+    // Executes left rotation on the given node.
     private void rotateLeft(RedBlackNode node) {
         // Copy node's right child.
         RedBlackNode yNode = node.getRight();
@@ -66,7 +66,7 @@ public class RedBlackTree {
         node.setParent(yNode);
     }
 
-    // Performs right rotation for the node.
+    // Executes right rotation on the given node.
     private void rotateRight(RedBlackNode node) {
         // Copy node's left child.
         RedBlackNode yNode = node.getLeft();
@@ -100,6 +100,7 @@ public class RedBlackTree {
 
         node.setParent(yNode);
         
+        // Inserts the node at appropriate position by binary tree properties.
         if(yNode == nil) {
             root = node;
         } else if(node.getBuildingNumber() < yNode.getBuildingNumber()) {
@@ -160,6 +161,7 @@ public class RedBlackTree {
         root.setColor(NodeColor.BLACK);
     }
 
+    // Removes the given node from the tree.
     public void delete(RedBlackNode node) {
         if(node == null) 
             throw new IllegalArgumentException("Error: Invalid input. Cannot remove null.");
@@ -271,7 +273,7 @@ public class RedBlackTree {
     }
 
     // Finds and returns a node with buildingNumber equal to the given buildingNumber.
-    // User binary search to find the node.
+    // Uses binary search to find the node.
     public RedBlackNode search(int buildingNumber) {
         return searchRecursive(root, buildingNumber);
     }

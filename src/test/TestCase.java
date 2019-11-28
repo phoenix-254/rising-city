@@ -2,13 +2,13 @@ package test;
 
 // A generic class containing information regarding different types of test cases.
 public class TestCase {
-    // Type of test operation.
+    // Contains enum value representing the type of operation to be performed.
     private TestCommand testCommand;
 
-    // Time when the test case is read from input.
+    // Time when the test case has to be executed.
     private int inputTime;
 
-    // Unique integer identifier for building.
+    // Unique integer identifier for the building.
     private int buildingId;
     // Total time required for constructing the entire building.
     private int totalConstructionTime;

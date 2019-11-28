@@ -1,6 +1,6 @@
 package test;
 
-// Enum containing all the different types of operations performed by test cases.
+// An enum class containing all the different types of operations required to be performed by the program.
 public enum TestCommand {
     INSERT,
     PRINT,
