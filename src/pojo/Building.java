@@ -22,7 +22,7 @@ public class Building {
         return buildingNumber;
     }
 
-    public void setBuildingNumber(int buildingNumber) {
+    private void setBuildingNumber(int buildingNumber) {
         this.buildingNumber = buildingNumber;
     }
 
@@ -38,12 +38,12 @@ public class Building {
         return totalTime;
     }
 
-    public void setTotalTime(int totalTime) {
+    private void setTotalTime(int totalTime) {
         this.totalTime = totalTime;
     }
 
     @Override
     public String toString() {
-        return "(" + this.buildingNumber + "," + this.executedTime + "," + this.totalTime + ")";
+        return "(" + getBuildingNumber() + "," + getExecutedTime() + "," + getTotalTime() + ")";
     }
 }

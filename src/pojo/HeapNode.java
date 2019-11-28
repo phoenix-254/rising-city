@@ -1,8 +1,10 @@
 package pojo;
 
 public class HeapNode extends Building {
+    // Pointer to the corresponding red black node.
     private RedBlackNode rbtNodeReference;
 
+    // Constructor.
     public HeapNode(int buildingNumber, int executedTime, int totalTime, RedBlackNode node) {
         super(buildingNumber, executedTime, totalTime);
         this.setRbtReference(node);
@@ -12,7 +14,7 @@ public class HeapNode extends Building {
         return rbtNodeReference;
     }
 
-    public void setRbtReference(RedBlackNode node) {
+    private void setRbtReference(RedBlackNode node) {
         this.rbtNodeReference = node;
     }
 }

@@ -52,7 +52,7 @@ public class CityBuilder {
                         case PRINT:
                             OutputParser.addBuilding(redBlackTree.search(testCase.getStartBuildingNum()));
                             break;
-                        case PRINT_MULTIPLE:
+                        case PRINTBUILDING:
                             OutputParser.addMultipleBuildings(redBlackTree.searchInRange(
                                 testCase.getStartBuildingNum(), testCase.getEndBuildingNum()));
                             break;
@@ -78,7 +78,7 @@ public class CityBuilder {
                     daysLeftToWorkInSession = Math.min(currentBuilding.getTotalTime() - 
                                                     currentBuilding.getExecutedTime(), MAX_DAYS_TO_WORK);
                 }
-                else { // Just increment the global timer if heap is empty..
+                else { // Just increment the global timer if heap is empty.
                     presentDay++;
                     continue;
                 }

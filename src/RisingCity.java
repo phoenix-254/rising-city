@@ -9,6 +9,7 @@ public class risingCity {
     private static Queue<TestCase> testCases;
 
     public static void main(String[] args) throws IOException {
+        // Input filename will be provided in run-time arguments array. i.e args[0]
         try(BufferedReader bufferedReader = new BufferedReader(new FileReader(new File(args[0])))) {
             testCases = new LinkedList<>();
             

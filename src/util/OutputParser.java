@@ -14,6 +14,7 @@ public class OutputParser {
     // Empty node tuple, to be printed when node requested to be print is not found.
     private static final String emptyNodeTuple = "(0,0,0)";
 
+    // Name of the output file.
     private static final String outputFilename = "output_file.txt";
 
     public static void addBuilding(RedBlackNode node) {
