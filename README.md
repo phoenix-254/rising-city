@@ -2,8 +2,6 @@
 
 ## Problem description
 
-<details><summary>Click to read problem description</summary>
-
 <p>
 Wayne enterprises is developing a new city. They are constructing many buildings and plan to use software to keep track of all the buildings under construction. 
 
@@ -45,7 +43,6 @@ The number at the beginning of each command is the global time when the command 
 *All output should go to a file named “output_file.txt”.*
 
 </p>
-</details>
 
 
 ## Build Steps
