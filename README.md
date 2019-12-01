@@ -1,7 +1,10 @@
 # rising-city
 
-**Problem description**
+## Problem description
 
+<details><summary>Click to read problem description</summary>
+
+<p>
 Wayne enterprises is developing a new city. They are constructing many buildings and plan to use software to keep track of all the buildings under construction. 
 
 *A building record has the following fields:*
@@ -40,3 +43,21 @@ The number at the beginning of each command is the global time when the command 
 - Other output includes completion date of each building and completion date of city.
 
 *All output should go to a file named “output_file.txt”.*
+
+</p>
+</details>
+
+
+## Build Steps
+
+- Clone or download the repo using `git clone https://github.com/phoenix-254/rising-city.git`
+- move to `src` directory and run `make` to compile source - this will generate risingCity.class compiled file which we can run thourgh command line
+- run `risingCity input_file.txt` to run the program - this will generate program output in output_file.txt
+- Fiddle around with your own test cases by editing input_file.txt and verifying if correct output_file.txt is generated.
+- Extra: run `make clean` to clean the compiled binaries
+
+
+## License
+
+[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
+- **[MIT license](http://opensource.org/licenses/mit-license.php)**
